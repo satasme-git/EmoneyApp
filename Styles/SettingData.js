@@ -13,7 +13,7 @@ export const SettingData = [
     },
     {
         id:'3',
-        name: 'Terms of Servivce',
+        name: 'Terms of Service',
         // name: 'About',
         screen:'Terms'
     },

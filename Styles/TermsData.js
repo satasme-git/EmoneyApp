@@ -37,7 +37,7 @@ export const TermsData = [
     {
     id:'8',
     head: '8. Intellectual Property Rights:',
-    content:"8.1 All the material contained in www.Emoneytag.com , including, without limitation, the content, software, images, drawings and design, is the sole property of Emoneytag and is protected by the copyright protection laws for the time being in force in Poland and by the relevant International Treaties. No user is allowed to copy, reproduce, distribute, reprint, host or use in any other manner without the written approval of Emoneytag.\n8.2 In the event of infringement of our rights, we shall take strict legal action, and shall also claim compensation.\n8.3 Emoneytag reserves the rights not hereby claimed."
+    content:"8.1 All the material contained in www.emoneytag.com , including, without limitation, the content, software, images, drawings and design, is the sole property of Emoneytag and is protected by the copyright protection laws for the time being in force in Poland and by the relevant International Treaties. No user is allowed to copy, reproduce, distribute, reprint, host or use in any other manner without the written approval of Emoneytag.\n8.2 In the event of infringement of our rights, we shall take strict legal action, and shall also claim compensation.\n8.3 Emoneytag reserves the rights not hereby claimed."
     },
     
     {

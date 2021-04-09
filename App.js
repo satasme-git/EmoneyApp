@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {Platform,StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import DrawerNavigation from "./Screens/DrawerNavigation";
+import { EmoneyProvider } from './context/Context';
 
 const App= () => {
 
@@ -17,9 +18,12 @@ const App= () => {
 
 
   return (
-  <NavigationContainer>
-    <DrawerNavigation/>
-  </NavigationContainer>
+    <EmoneyProvider>
+      <NavigationContainer>
+        <DrawerNavigation/>
+      </NavigationContainer>      
+    </EmoneyProvider>
+
   );
 };
 

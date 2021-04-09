@@ -21,7 +21,7 @@ export default function MyTabs() {
   return (
     <Tab.Navigator
     initialRouteName="Home"
-    activeColor="#e12229"
+    activeColor="#e25b5b"
     inactiveColor="gray"
     barStyle={{ backgroundColor: '#fff',elevation:25 }}
     shifting={false}

@@ -11,6 +11,7 @@ export default function Help () {
     
   const navigation = useNavigation();
 
+
     return (
       <View style={{flex:1}}>
         <View style={{backgroundColor:'white',height:75,paddingLeft:10,}}>

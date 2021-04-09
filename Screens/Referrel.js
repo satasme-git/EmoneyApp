@@ -8,7 +8,7 @@ import Clipboard from '@react-native-community/clipboard';
 // import { SocialIcon } from 'react-native-elements'
 
 export default function Referrel () {
-  
+
   const navigation = useNavigation();
 
     return (
