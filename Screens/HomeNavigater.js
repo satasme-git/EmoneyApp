@@ -13,12 +13,13 @@ import UploadVideo from './UploadVideo'
 import Survey from './Survey'
 import LinkClick from './LinkClick'
 import SocialOrderSingle from './SocialOrderSingle'
-
+import SocialEngSingle from './SocialEngSingle'
 export default function  HomeNavigater() {
     return (
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} options={{ headerShown:false}}/>
         <Stack.Screen name="Earn" component={Earn} options={{ headerShown:false}}/>
+        {/* <Stack.Screen name="SocialEngSingle" component={SocialEngSingle} options={{ headerShown:false}}/> */}
         <Stack.Screen name="PlaceOrders" component={PlaceOrders} options={{ headerShown:false }}/>
         <Stack.Screen name="BrowseVideo" component={BrowseVideo} options={{ headerShown:false }}/>
         <Stack.Screen name="SocialEngagement" component={SocialEngagement} options={{ headerShown:false }}/>

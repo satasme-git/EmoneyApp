@@ -18,7 +18,7 @@ export default function ResetPw () {
 
 
   const [emailNull, setEmailNull] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   const resetPw = (em) =>{
 
@@ -50,10 +50,6 @@ export default function ResetPw () {
   const reset =()=>{
     setEmail('')
   }
-
-
-
-  
     const navigation = useNavigation();
 
     return (
@@ -63,7 +59,7 @@ export default function ResetPw () {
         <View style={{backgroundColor:'green',padding:10,alignSelf:'center',top:40,position:'absolute',zIndex:2}} 
         onLayout={()=>
           setTimeout(() => {
-            setError('')
+            setError(null)
             // console.log(error);
             navigation.navigate('Login')
           }, 800)

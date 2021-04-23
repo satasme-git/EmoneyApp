@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text ,TextInput , Dimensions, ScrollView} from 'react-native';
+import { View, Text ,TextInput , Dimensions, ScrollView , Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useRoute } from '@react-navigation/native';
@@ -38,7 +38,10 @@ export default function SocialOrderSingle () {
     return (
       <View style={{flex:1}}>
         <View style={{backgroundColor:'white',height:75,paddingLeft:10,}}>
-          <Text style={{marginTop:25,fontSize:24,color:'#011842',marginLeft:30}}> {item.name}</Text>
+          <View style={{marginTop:25,flexDirection:'row',alignItems:'center',marginLeft:30}}>
+            <Image source={item.image} style={{height:25,width:25,resizeMode:'cover',}}/>
+            <Text style={{fontSize:24,color:'#011842'}}> {item.name} </Text>
+          </View>
           <Ionicons name="arrow-back" color={'black'} size={25} style={{position: 'absolute',top:30,left:10}} onPress={()=>navigation.goBack()} />
         </View>
         <View style={[styles.container]}>

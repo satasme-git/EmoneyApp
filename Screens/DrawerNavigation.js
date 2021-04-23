@@ -3,7 +3,9 @@ import { View, Text , TouchableHighlight, Image} from 'react-native';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation  } from '@react-navigation/native';
+import { StackActions , getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import { createDrawerNavigator , DrawerContentScrollView , DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import TabNavigation from "./TabNavigation";
 import PlaceOrders from "./PlaceOrders";
@@ -25,71 +27,63 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <View style={{alignItems: 'center',}}>
         <Image source={require('../assets/icon.png')} style={{height:100,width:100}} />
-        <Text>{emoney.user.email}</Text>
+        {
+          emoney.user.length==0?<Text>Email Address</Text>:
+          <Text>{emoney.user.email}</Text>
+        }
+        
         <View style={{backgroundColor:'#303030',height:0.5,marginTop:5,marginBottom:5}} />
       </View>
       <View style={{backgroundColor:'#303030',height:0.5,marginTop:5,marginBottom:5}} />
       {/* <DrawerItemList {...props} /> */}
 
       <TouchableHighlight underlayColor={'#c4c4c4'} style={{padding:12,backgroundColor:emoney.state=='home'? '#5c9be2':'white',}} onPress={()=>{props.navigation.navigate('Home');emoney.setState('home')}}>
-        <Text style={{fontSize:16,color:emoney.state=='home'? 'white':'black'}}>Home</Text>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          <Ionicons name="home-outline" color={emoney.state=='home'? 'white':'black'} size={20} style={{marginRight:10}}/>
+          <Text style={{fontSize:16,color:emoney.state=='home'? 'white':'black'}}>Home</Text>
+        </View>
+        
       </TouchableHighlight>
 
       <TouchableHighlight underlayColor={'#c4c4c4'} style={{padding:12,backgroundColor:emoney.state=='or'? '#5c9be2':'white',}} onPress={()=>{props.navigation.navigate('My Orders');emoney.setState('or')}}>
-        <Text style={{fontSize:16,color:emoney.state=='or'? 'white':'black'}}>My Orders</Text>
+      <View style={{flexDirection:'row',alignItems:'center'}}>
+          <Ionicons name="ios-list-outline" color={emoney.state=='or'? 'white':'black'} size={20} style={{marginRight:10}}/>
+          <Text style={{fontSize:16,color:emoney.state=='or'? 'white':'black'}}>My Orders</Text>
+      </View>
       </TouchableHighlight>
 
       <TouchableHighlight underlayColor={'#c4c4c4'} style={{padding:12,backgroundColor:emoney.state=='ref'? '#5c9be2':'white',}} onPress={()=>{props.navigation.navigate('Referrel');emoney.setState('ref')}}>
-        <Text style={{fontSize:16,color:emoney.state=='ref'? 'white':'black'}}>Referrel</Text>
+      <View style={{flexDirection:'row',alignItems:'center'}}>
+          <Ionicons name="share-social-outline" color={emoney.state=='ref'? 'white':'black'} size={20} style={{marginRight:10}}/>
+          <Text style={{fontSize:16,color:emoney.state=='ref'? 'white':'black'}}>Referrel</Text>
+      </View>
       </TouchableHighlight>
 
       <TouchableHighlight underlayColor={'#c4c4c4'} style={{padding:12,backgroundColor:emoney.state=='cont'? '#5c9be2':'white',}} onPress={()=>{props.navigation.navigate('Contact');emoney.setState('cont')}}>
-        <Text style={{fontSize:16,color:emoney.state=='cont'? 'white':'black'}}>Contact</Text>
+      <View style={{flexDirection:'row',alignItems:'center'}}>
+          <Ionicons name="mail-outline" color={emoney.state=='cont'? 'white':'black'} size={20} style={{marginRight:10}}/>
+          <Text style={{fontSize:16,color:emoney.state=='cont'? 'white':'black'}}>Contact</Text>
+      </View>
       </TouchableHighlight>
 
-      <TouchableHighlight underlayColor={'#c4c4c4'} style={{padding:12,backgroundColor:emoney.state=='login'? '#5c9be2':'white',}} onPress={()=>{props.navigation.navigate('Login');emoney.setState('login')}}>
-        <Text style={{fontSize:16,color:emoney.state=='login'? 'white':'black'}}>Login</Text>
+      <View style={{backgroundColor:'#303030',height:0.4 ,margin:5}} />
+      <TouchableHighlight underlayColor={'#c4c4c4'} style={{padding:12,backgroundColor:emoney.state=='login'? '#5c9be2':'white',}} onPress={()=>{
+        {emoney.user.length==0?
+          props.navigation.navigate('Login'):
+          props.navigation.dispatch(StackActions.popToTop());
+        }
+        ;props.navigation.closeDrawer();
+      emoney.setState('login');emoney.setUser([])}}>
+
+      <View style={{flexDirection:'row',alignItems:'center'}}>
+        <Ionicons name={emoney.user.length==0?'log-in-outline':'log-out-outline'} color={emoney.state=='login'? 'white':'black'} size={20} style={{marginRight:10}}/>
+        <Text style={{fontSize:16,color:emoney.state=='login'? 'white':'black'}}>{emoney.user.length==0?'Login':'Logout'}</Text>
+      </View>
       </TouchableHighlight>
       {/* <DrawerItem label="Help" onPress={() => alert('Link to help')} /> */}
     </DrawerContentScrollView>
   );
 }
-
-
-// function CustomDrawerContent(props) {
-
-//   const emoney = useContext(EmoneyContext);
-//   const jumpToAction = TabActions.jumpTo('TabNavigation');
-//   const navigation = useNavigation();
-
-//   return (
-//     <DrawerContentScrollView {...props}>
-//         <View style={{padding:10,height:200,justifyContent:'space-between'}} >
-          
-          
-//         </View>
-
-
-//       {/* <DrawerItemList {...props} /> */}
-      
-//       <View>
-//           <TouchableHighlight underlayColor={lang.state=='Home'?'#9d151a':"#DDDDDD"} style={{flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',backgroundColor:lang.state=='Home'|| state == 'Home'?'#e12229': 'white'}} 
-//           onPress={()=>{props.navigation.navigate('Home');lang.setState('Home');props.navigation.dispatch(jumpToAction)}}>
-//             <Text style={[styles.drawerText,,{color:lang.state =='Home' || state == 'Home'?'white':'black'}]}>Home</Text>
-//           </TouchableHighlight>
-        
-//       </View>
-
-
-//       <View style={{backgroundColor:'#303030',height:0.5,marginTop:5,marginBottom:5}} />
-//       <TouchableHighlight underlayColor={lang.state=='log'?'#9d151a':"#DDDDDD"} style={{flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',backgroundColor:lang.state=='log'?'#e12229':'white'}} 
-//       onPress={()=>{props.navigation.navigate('Logout');lang.setState('log')}}>
-//         <Text style={[styles.drawerText,{color:lang.state=='log'?'white':'black'}]}>{lang.logdata.length==0 ?'Login':'Logout'}</Text>
-//       </TouchableHighlight>
-//     </DrawerContentScrollView>
-//   );
-// }
-
 
 const Drawer = createDrawerNavigator();
 
@@ -105,7 +99,14 @@ function MyDrawer() {
       <Drawer.Screen name="My Orders" component={MyOrders} />
       <Drawer.Screen name="Contact" component={Contact} />
       <Drawer.Screen name="Referrel" component={Referrel} />
-      <Drawer.Screen name="Login" component={LoginStack} />
+      <Drawer.Screen name="Login" component={LoginStack}         
+      options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route);
+          return {
+            swipeEnabled: routeName !== 'Login',
+          };
+       }}
+      />
     </Drawer.Navigator>
     // </NavigationContainer>
   );

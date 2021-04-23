@@ -1,15 +1,37 @@
-import React, { Component } from 'react';
-import { View, Text , Image, ScrollView, TouchableHighlight} from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text , Image, ScrollView, TouchableHighlight, Share, Button} from 'react-native';
 import { useNavigation , DrawerActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ReferrelSocial } from "../Styles/ReferrelSocial";
 import { SocialIcon } from 'react-social-icons';
 import Clipboard from '@react-native-community/clipboard';
+import {EmoneyContext}  from '../context/Context';
 // import { SocialIcon } from 'react-native-elements'
 
 export default function Referrel () {
 
   const navigation = useNavigation();
+
+  const emoney = useContext(EmoneyContext);
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'emoneytag.com/register?ref='+emoney.user.refcode.slice(1)+'',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
     return (
       <View style={{flex:1}}>
@@ -20,24 +42,20 @@ export default function Referrel () {
         <ScrollView style={{backgroundColor:'white'}}>
         <Text style={{color:'black',fontSize:18,padding:10}}>Referral Program</Text>
         <Text style={{paddingHorizontal:10}}>Invite a friend or someone from the Internet and make a transfer for points.</Text>
-        <View style={{backgroundColor:'#eaebee',margin: 10,padding:10,borderRadius:10,height:100}}>
-          <Text>emoneytag.com/register?ref=C@23a5c5f3</Text>
+        <View style={{backgroundColor:'#eaebee',margin: 10,padding:10,borderRadius:10,height:80}}>
+          <Text>emoneytag.com/register?ref={emoney.user.refcode.slice(1)}</Text>
           <TouchableHighlight onPress={() => Clipboard.setString('emoneytag.com/register?ref=C@23a5c5f3')} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10,alignSelf:'flex-end',}}>
             <Text style={{color:'white'}}>Copy</Text>
           </TouchableHighlight>
         </View>
-        <View style={{flexDirection:'row'}}>
+        {/* <View style={{flexDirection:'row'}}> */}
+        {/* <Button onPress={onShare} title="Share" /> */}
+        <TouchableHighlight onPress={onShare} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:5,alignSelf:'flex-end',marginRight:10,}}>
+        <Ionicons name="share-social-outline" color={'white'} size={25} />
+          </TouchableHighlight>
+        
 
-        {ReferrelSocial.map((item)=>
-          <View key={item.id}>
-            <View >
-            <Image source={item.image} style={{height:35,width:35,borderRadius:25,marginRight:2,marginStart:2}}/>
-            {/* <SocialIcon network="pinterest" style={{ height: 25, width: 25 }} /> */}
-            </View>            
-          </View>
-        )}
-
-        </View>
+        {/* </View> */}
         </ScrollView>
       </View>
     );

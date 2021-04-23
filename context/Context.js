@@ -9,6 +9,7 @@ export const EmoneyProvider = ({ children }) => {
   const [id, setId] = useState("");
   const [user, setUser] = useState([]);
   const [state, setState] = useState("home");
+  const [complete, setComplete] = useState(0);
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user')
@@ -38,7 +39,9 @@ export const EmoneyProvider = ({ children }) => {
         state,
         setState,
         user,
-        setUser
+        setUser,
+        complete,
+        setComplete
       }}
     >
       {children}

@@ -54,17 +54,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   headerText2: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily:'sans-serif',
-    color:'#336db0'
+    color:'#336dcc'
   },
   child: { 
-      width:windowWidth, 
-      justifyContent: 'center' 
+      width:windowWidth-20, 
+      justifyContent: 'center',
+      height:90 ,
+      elevation:5,
+      margin:10,
+      borderRadius:10,
+      backgroundColor: '#c87ff0',
     },
   text: { 
       fontSize: 16, 
-      textAlign: 'center' 
+      textAlign: 'center' ,
+      height:25
     },
     image: { 
         resizeMode: "cover",

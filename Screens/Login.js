@@ -72,7 +72,7 @@ export default function Login () {
      
       setUserData(userInfo.user)
       setUserInfo(userInfo.user)
-     
+      // console.log(userInfo.user)
       googleSignUp(userInfo.user.email,'google',)
 
     } catch (error) {
@@ -168,12 +168,14 @@ export default function Login () {
       console.log('Success:', data.user);
       emoney.setUser(data.user)
       storeData(data.user)
+      navigation.navigate('TabNavigation')
+      emoney.setState('home')
     })
     .catch((error) => {
       console.error('Error:', error);
       
     })
-    navigation.navigate('TabNavigation')
+    // navigation.navigate('TabNavigation')
   }
 
 
@@ -192,12 +194,22 @@ export default function Login () {
     .then(data => {
       // getuserData(); 
       console.log('Success:', data);
+
+      fetch(
+        'https://emoneytag.com/api/users/'+data+'',
+      )
+        .then((response) => response.json())
+        .then((json) => {emoney.setUser(json.user);storeData(json.user)})
+        .catch((error) => console.error(error))
+        .finally(() => {setLoading(false);});
+      setRefreshing(false);
+      emoney.setId(data)
       setNormalError(false)
       setLoginError(false)
       setPwNull(false)
       setEmailNull(false)
       reset()
-      emoney.setUser(data.user)
+      
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -312,7 +324,8 @@ export default function Login () {
         onLayout={()=>
           setTimeout(() => {
             setLoginError(null)
-            // navigation.navigate('TabNavigation')
+            navigation.navigate('TabNavigation')
+            emoney.setState('home')
           }, 800)
         }
         >
@@ -340,7 +353,7 @@ export default function Login () {
           setTimeout(() => {
             setNormalError(null)
             emoney.setState('home')
-            navigation.navigate('TabNavigation')
+            // navigation.navigate('TabNavigation')
           }, 800)
         }
         >
@@ -404,13 +417,13 @@ export default function Login () {
             <Text style={{color:'#0265d4'}} onPress={()=>navigation.navigate('ResetPw')}>Reset Password</Text>
           </View>
 
-          <TouchableHighlight underlayColor={'#011842'} onPress={()=>navigation.navigate('TabNavigation')} style={{backgroundColor:'#2f55a4',padding:15,paddingVertical:10,borderRadius:2,elevation:3,width:windowWidth-40,alignItems:'center',marginBottom:10}}>
+          <TouchableHighlight underlayColor={'#011842'} style={{backgroundColor:'#2f55a4',padding:15,paddingVertical:10,borderRadius:2,elevation:3,width:windowWidth-40,alignItems:'center',marginBottom:10}}>
             <View>
               <Text style={{color:'white',fontSize:15}}> Connect with Facebook </Text>
             </View>
           </TouchableHighlight>
 
-     {body}
+          {body}
 
           <View style={{flexDirection:'row',alignItems:'center',padding:10}}>
             <Text>Didn't have An Account? </Text>

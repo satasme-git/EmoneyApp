@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState , useContext } from 'react';
 import { View, Text , Dimensions, Image, TextInput, ScrollView, TouchableHighlight } from 'react-native';
 import {styles,buttons} from "../Styles/Style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation , DrawerActions } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {EmoneyContext}  from '../context/Context';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,6 +18,42 @@ export default function Contact () {
   const [email, setEmail] = useState( "");
   const [sub, setSub] = useState( "");
   const [msg, setMsg] = useState( "");
+
+  const emoney = useContext(EmoneyContext);
+
+  const postMessage = (q,sub,msg) =>{
+
+    const data = { message: msg, subject:sub , qtype:q};
+   
+    fetch('https://emoneytag.com/api/userfeedback/' + emoney.user.id + '', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.text())
+    .then(data => {
+      // getuserData(); 
+      console.log('Success:', data);
+      reset()
+      // setChEmail(em)
+      // storeData(data.user)
+      // navigation.navigate('TabNavigation')
+      // emoney.setState('home')
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      
+    })
+    // navigation.navigate('TabNavigation')
+  }
+
+  const reset =()=>{
+    setMsg('')
+    setQue('')
+    setSub('')
+  }
 
     return (
       <View style={styles.container}>
@@ -45,10 +82,10 @@ export default function Contact () {
           <View>
             <DropDownPicker
                 items={[
-                    {label: 'I Have a Question', value: 'ihaq',selected:true},
-                    {label: 'Cancel Order', value: 'co'},
-                    {label: 'Refill Order', value: 'ro'},
-                    {label: 'Other Issues', value: 'oi'}
+                    {label: 'I Have a Question', value: 'I Have a Question',selected:true},
+                    {label: 'Cancel Order', value: 'Cancel Order'},
+                    {label: 'Refill Order', value: 'Refill Order'},
+                    {label: 'Other Issues', value: 'Other Issues'}
                 ]}
                 // placeholderStyle={{
                 //   fontWeight: 'bold',
@@ -63,7 +100,7 @@ export default function Contact () {
                 dropDownStyle={{backgroundColor: '#fafafa'}}
                 onChangeItem={item => setQue(item)}
             />
-            <TextInput
+            {/* <TextInput
               style={styles.loginInput}
               placeholder="Name"
               onChangeText={(text) => setName(text)}
@@ -77,7 +114,7 @@ export default function Contact () {
               value={email}
               textContentType={'emailAddress'}
               keyboardType={'email-address'}
-            />
+            /> */}
             <TextInput
               style={styles.loginInput}
               placeholder="Subject"
@@ -95,7 +132,7 @@ export default function Contact () {
               multiline = {true}
               textAlignVertical={'top'}
             />
-            <TouchableHighlight style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10,alignSelf:'flex-end',}}>
+            <TouchableHighlight style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10,alignSelf:'flex-end',}} onPress={()=>postMessage(que,sub,msg)}>
               <Text style={{color:'white'}}>Submit</Text>
             </TouchableHighlight>
           </View>

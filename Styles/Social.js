@@ -10,8 +10,10 @@ export const Social = [
         icon:'eye'
       },
       {
-        header:'Subscribers',
-        icon:'adduser'
+        header:'Subscribe',
+        icon:'adduser',
+        button1:'Subscribe',
+        button2:'Subscribed'
       }
     ]
     
@@ -24,16 +26,22 @@ export const Social = [
     placeholder:'https://www.facebook.com/...',
     types:[
       {
-        header:'Post Likes',
-        icon:'like1'
+        header:'Post Like',
+        icon:'like1',
+        button1:'Like',
+        button2:'Liked'
       },
       {
-        header:'Page Likes',
-        icon:'like1'
+        header:'Page Like',
+        icon:'like1',
+        button1:'Like',
+        button2:'Liked'
       },
       {
-        header:'Shares',
-        icon:'sharealt'
+        header:'Share',
+        icon:'sharealt',
+        button1:'Share',
+        button2:'Shared'
       },
       
     ]
@@ -46,7 +54,9 @@ export const Social = [
     types:[
       {
         header:'Followers',
-        icon:'sharealt'
+        icon:'sharealt',
+        button1:'Follow',
+        button2:'Followed'
       }, 
     ]
     },
@@ -58,19 +68,23 @@ export const Social = [
     types:[
       {
         header:'Followers',
-        icon:'sharealt'
+        icon:'sharealt',
+        button1:'Follow',
+        button2:'Followed'
       }, 
     ]
     },
     {
       id:'5',
-    name: 'Tik tok',
+    name: 'Tiktok',
     image:require('../assets/Social/5.png'),
     placeholder:'https://www.tiktok.com/...',
     types:[
       {
         header:'Followers',
-        icon:'sharealt'
+        icon:'sharealt',
+        button1:'Follow',
+        button2:'Followed'
       }, 
     ]
     },
