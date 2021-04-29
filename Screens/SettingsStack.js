@@ -9,6 +9,7 @@ import Help from './Help'
 import Privacy from './Privacy'
 import About from './About'
 import Terms from './Terms'
+import How from './How'
 
 export default function  MyStack() {
     return (
@@ -17,7 +18,8 @@ export default function  MyStack() {
         <Stack.Screen name="Help" component={Help} options={{ headerShown:false}}/>
         <Stack.Screen name="Privacy" component={Privacy} options={{ headerShown:false }}/>
         <Stack.Screen name="About" component={About} options={{ headerShown:false }}/>        
-        <Stack.Screen name="Terms" component={Terms} options={{ headerShown:false }}/>
+        <Stack.Screen name="Terms" component={Terms} options={{ headerShown:false }}/>       
+        <Stack.Screen name="How" component={How} options={{ headerShown:false }}/>
       </Stack.Navigator>
     );
   }

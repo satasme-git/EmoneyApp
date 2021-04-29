@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, Text , Animated , Dimensions , Image, StatusBar, ScrollView } from 'react-native';
+import React, { useRef , useEffect} from 'react';
+import { View, Text , Animated , Dimensions , Image, StatusBar, ScrollView , LogBox } from 'react-native';
 import StickyParallaxHeader from 'react-native-sticky-parallax-header'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -76,6 +76,10 @@ export default function Home () {
           outputRange: [1, 1, 0],
           extrapolate: 'clamp'
         })
+
+        useEffect(() => {
+          LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+      },)
     
         return (
           <View style={styles.foreground}>
@@ -126,7 +130,7 @@ export default function Home () {
               content: <Earn/>
             },
             {
-              title: 'Place Orders',
+              title: 'Promote Social Media',
               content: 
                 <PlaceOrders/>    
             },

@@ -13,7 +13,9 @@ import UploadVideo from './UploadVideo'
 import Survey from './Survey'
 import LinkClick from './LinkClick'
 import SocialOrderSingle from './SocialOrderSingle'
-import SocialEngSingle from './SocialEngSingle'
+import SurveySingle from './SurveySingle'
+
+
 export default function  HomeNavigater() {
     return (
       <Stack.Navigator>
@@ -24,6 +26,7 @@ export default function  HomeNavigater() {
         <Stack.Screen name="BrowseVideo" component={BrowseVideo} options={{ headerShown:false }}/>
         <Stack.Screen name="SocialEngagement" component={SocialEngagement} options={{ headerShown:false }}/>
         <Stack.Screen name="Survey" component={Survey} options={{ headerShown:false }}/>
+        <Stack.Screen name="SurveySingle" component={SurveySingle} options={{ headerShown:false }}/>
         <Stack.Screen name="UploadVideo" component={UploadVideo} options={{ headerShown:false }}/>
         <Stack.Screen name="LinkClick" component={LinkClick} options={{ headerShown:false }}/>
         <Stack.Screen name="SocialOrderSingle" component={SocialOrderSingle} options={{ headerShown:false }}/>

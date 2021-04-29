@@ -15,6 +15,8 @@ import Home from "./Home";
 import Billings from "./Billings";
 import HomeNavigater from "./HomeNavigater";
 
+import ImagePicker from './ImagePicker'
+
 const Tab = createMaterialBottomTabNavigator();
 
 export default function MyTabs() {

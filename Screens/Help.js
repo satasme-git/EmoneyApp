@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView ,Image} from 'react-native';
+import { View, Text, ScrollView ,Image, TouchableHighlight} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,13 +25,15 @@ export default function Help () {
         <ScrollView style={styles.container}>
 
       {HelpData.map((item)=>
-              <View key={item.id} style={{backgroundColor: 'white',margin:20,marginBottom:10,elevation:5,borderRadius:10}}>
-              <Image source={item.image} style={{height:150,width:200,resizeMode:'contain',alignSelf:'center'}}/>
-              <View style={{alignItems:'center',padding:10}}>
-              <Text style={[styles.heading,{paddingBottom:10}]}>{item.name}</Text>
-              <AntDesign name="rightcircle" color={'#5c9be2'} size={25} />
-              </View>
-            </View>
+              <TouchableHighlight underlayColor={'#DDDDDD'} onPress={()=>{navigation.navigate('How',{item:item})}} key={item.id} style={{backgroundColor: 'white',margin:20,marginBottom:10,elevation:5,borderRadius:10}}>
+                <View>
+                  <Image source={item.image} style={{height:150,width:200,resizeMode:'contain',alignSelf:'center'}}/>
+                  <View style={{alignItems:'center',padding:10}}>
+                    <Text style={[styles.heading,{paddingBottom:10}]}>{item.name}</Text>
+                    <AntDesign name="rightcircle" color={'#5c9be2'} size={25} />
+                  </View>
+                </View>
+            </TouchableHighlight>
       )}
 
         </ScrollView>

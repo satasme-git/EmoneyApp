@@ -22,9 +22,11 @@ export default function Settings () {
         {
             SettingData.map((item)=>
                 <View key={item.id} style={{alignItems:'center'}}>
-                    <TouchableHighlight underlayColor={'#d4d4d4'} onPress={()=>navigation.navigate(item.screen)} style={{width:windowWidth-20,padding: 5,paddingLeft:20}}>
+
+                    <TouchableHighlight underlayColor={'#d4d4d4'} onPress={()=>navigation.navigate(item.screen)} style={{width:windowWidth-20,padding: 5,paddingLeft:5}}>
                         <Text style={styles.headerText2}>{item.name}</Text>   
                     </TouchableHighlight>
+                    {/* <View style={{backgroundColor: 'gray',height:0.5,width:windowWidth}} /> */}
                 </View>
             )
         }

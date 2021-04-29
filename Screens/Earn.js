@@ -31,7 +31,7 @@ export default function Earn (){
         {
           EarnData.map((item)=>
 			    // <BoxShadow setting={shadowOpt}>
-            <TouchableHighlight underlayColor={'#efefef'} onPress={()=>navigation.navigate(item.screen)} key={item.id} style={{backgroundColor: 'white',flexDirection:'row',alignItems:'center',borderRadius:5,elevation:4,margin:10}}>
+            <TouchableHighlight underlayColor={'#efefef'} onPress={()=>navigation.navigate(item.screen)} key={item.id} style={{backgroundColor: 'white',flexDirection:'row',alignItems:'center',borderRadius:5,elevation:4,margin:10,marginBottom:item.id==5?10:0}}>
               <View style={{margin: 10,marginBottom:5,padding: 5,flexDirection:'row',alignItems:'center',borderRadius:5,width:windowWidth-20}}>
               <Image source={item.image} style={{height:70,width:70,resizeMode:'contain',margin:10}}/>
               <View style={{width:windowWidth/2,padding:5}}>

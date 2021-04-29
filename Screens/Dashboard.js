@@ -172,7 +172,7 @@ export default function Dashboard () {
           {/* </View> */}
         {Dummy.map((item)=>
             <View key={item.id} style={{backgroundColor:'white',marginHorizontal:10,marginVertical:5,marginTop:10,padding:15,elevation:5,borderRadius:10}}> 
-              <Text style={styles.mainHeader}>{item.name}</Text>
+              <Text style={[styles.mainHeader,{fontSize:17}]}>{item.name}</Text>
               <Text style={styles.innerText}>{item.point}</Text>
             </View>
         )}

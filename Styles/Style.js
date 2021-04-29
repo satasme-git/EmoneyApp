@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   headerText2: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily:'sans-serif',
     color:'#336dcc'
   },

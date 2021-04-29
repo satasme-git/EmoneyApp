@@ -27,6 +27,7 @@ export default function Profile () {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [complete, setComplete] = useState('');
+  const [earn, setEarn] = useState('');
 
   const [chemail, setChEmail] = useState('');
 
@@ -56,6 +57,24 @@ export default function Profile () {
     })
     // navigation.navigate('TabNavigation')
   }
+
+  const getPoints = () => {
+    fetch(
+      'https://emoneytag.com/api/profile/detail/'+emoney.user.id+'',
+    )
+      .then((response) => response.json())
+      .then((json) => 
+      
+      setEarn(json)
+      // console.log(json)
+      )
+      // .catch((error) => 
+      // console.error(error)
+      // )
+      .finally(() => {setLoading(false);});
+    setRefreshing(false);
+    
+  };
 
   const getProfile = () => {
     fetch(
@@ -94,6 +113,7 @@ export default function Profile () {
   
   useEffect(() => {
     getProfile()
+    getPoints()
   });
   const renderNavBar = () => (
     <View style={styles.navContainer}>
@@ -113,9 +133,9 @@ export default function Profile () {
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
           <View>
           <Image source={require('../assets/pro.png')} style={{height:100,width:100,borderRadius:50}}/>
-          <Text style={styles.headerText2}> {emoney.user.email} </Text>
-              <Text style={styles.headerText2}> {emoney.user.mobile} </Text>
-              <Text style={styles.headerText2}> Earned Points : 0$ </Text>
+          <Text style={[styles.headerText2]}>{earn.email} </Text>
+              <Text style={styles.headerText2}>Mobile Number : {earn.mobile} </Text>
+              <Text style={styles.headerText2}>Earned Points : {earn.points} </Text>
               
   
           </View>

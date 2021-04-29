@@ -30,7 +30,7 @@ export default function UploadVideo () {
 
         </View>
         <ScrollView style={styles.container}>
-        <View style={{backgroundColor:'white',elevation:5,margin:10,borderRadius:15,paddingBottom:10}}>
+        <View style={{backgroundColor:'white',elevation:5,margin:10,borderRadius:5,paddingBottom:10}}>
         <Text style={[styles.heading,{padding:10}]}> Upload Your Video </Text>
         
         <Text style={styles.ValidationText}> *A Maximum Video Size 50Mb * </Text>

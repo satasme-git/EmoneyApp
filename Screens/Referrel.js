@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext , useState , useEffect} from 'react';
 import { View, Text , Image, ScrollView, TouchableHighlight, Share, Button} from 'react-native';
 import { useNavigation , DrawerActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,6 +11,10 @@ import {EmoneyContext}  from '../context/Context';
 export default function Referrel () {
 
   const navigation = useNavigation();
+
+  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
 
   const emoney = useContext(EmoneyContext);
   const onShare = async () => {
@@ -33,6 +37,23 @@ export default function Referrel () {
     }
   };
 
+  const getReferralPoints =()=>{
+    fetch(
+      'https://emoneytag.com/api/userref/'+emoney.user.id+'',
+    )
+      .then((response) => response.text())
+      .then((json) => 
+      
+      setTotal(json)
+      // console.log(json)
+      )
+      .finally(() => {setLoading(false);});
+    setRefreshing(false);
+  }
+
+  useEffect(() => {
+    getReferralPoints()
+  });
     return (
       <View style={{flex:1}}>
         <View style={{backgroundColor:'white',height:75,justifyContent:'center',paddingLeft:40}}>
@@ -40,8 +61,8 @@ export default function Referrel () {
             <Text style={{marginTop:10,fontSize:24,color:'#011842'}}> Referrel </Text>
         </View>
         <ScrollView style={{backgroundColor:'white'}}>
-        <Text style={{color:'black',fontSize:18,padding:10}}>Referral Program</Text>
-        <Text style={{paddingHorizontal:10}}>Invite a friend or someone from the Internet and make a transfer for points.</Text>
+        {/* <Text style={{color:'black',fontSize:18,padding:10}}>Referral Program</Text> */}
+        <Text style={{paddingHorizontal:10}}>Invite a friend or someone from the Internet and make a transfer for 40 points. So far you have refered {total} people</Text>
         <View style={{backgroundColor:'#eaebee',margin: 10,padding:10,borderRadius:10,height:80}}>
           <Text>emoneytag.com/register?ref={emoney.user.refcode.slice(1)}</Text>
           <TouchableHighlight onPress={() => Clipboard.setString('emoneytag.com/register?ref=C@23a5c5f3')} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10,alignSelf:'flex-end',}}>
