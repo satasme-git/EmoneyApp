@@ -22,6 +22,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function MyTabs() {
   return (
     <Tab.Navigator
+    lazy
     initialRouteName="Home"
     activeColor="#d81a1a"
     inactiveColor="gray"

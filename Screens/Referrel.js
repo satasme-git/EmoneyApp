@@ -65,7 +65,7 @@ export default function Referrel () {
         <Text style={{paddingHorizontal:10}}>Invite a friend or someone from the Internet and make a transfer for 40 points. So far you have refered {total} people</Text>
         <View style={{backgroundColor:'#eaebee',margin: 10,padding:10,borderRadius:10,height:80}}>
           <Text>emoneytag.com/register?ref={emoney.user.refcode.slice(1)}</Text>
-          <TouchableHighlight onPress={() => Clipboard.setString('emoneytag.com/register?ref=C@23a5c5f3')} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10,alignSelf:'flex-end',}}>
+          <TouchableHighlight onPress={() => Clipboard.setString('emoneytag.com/register?ref=' + emoney.user.refcode.slice(1) )} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10,alignSelf:'flex-end',}}>
             <Text style={{color:'white'}}>Copy</Text>
           </TouchableHighlight>
         </View>
