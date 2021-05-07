@@ -63,6 +63,27 @@ export default function LinkClick () {
     
   };
 
+  const onSave = (ser,uid,oid) =>{
+
+    const data = { service: ser,userid:uid,orderid:oid};
+   
+    fetch('https://emoneytag.com/api/socialengage', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      
+    })
+    // navigation.goBack()
+  }
 
   useEffect(() => {
     getLinks()
@@ -99,14 +120,14 @@ export default function LinkClick () {
           keyExtractor={item => item.id}
           renderItem={(item) => (
             <View style={{elevation:5,backgroundColor: 'white',margin:10,marginBottom:Links.length==item.index+1  || Links.length-2==item.index?10:0,padding:10,borderRadius:10,width:(windowWidth-30)/2,justifyContent: 'space-between',marginRight:0}}>
-                <Image source={require('../assets/5.jpg')} style={[styles.thumbnail,{width:60,height:60,alignSelf:'center',resizeMode:'contain'}]} />
-                {/* <RNUrlPreview text={item.item.url} title={false} description={false} imageStyle={{height:100,width:(windowWidth-80)/2}} /> */}
+                {/* <Image source={require('../assets/5.jpg')} style={[styles.thumbnail,{width:60,height:60,alignSelf:'center',resizeMode:'contain'}]} /> */}
+                <RNUrlPreview text={item.item.url.includes("https://")==true?item.item.url:'https://'+item.item.url} title={false} description={false} imageStyle={{height:100,width:(windowWidth-80)/2}} />
                 <View>
                 <Text style={{color:'gray',padding:5,alignSelf:'center'}}>{points} points Avialable </Text>
-                {/* <Text>{item.item.url}</Text> */}
+                {/* <Text>{item.item.url.includes("https://")==true?item.item.url:'https://'+item.item.url}</Text> */}
              
                 {item.item.status=='Like'?
-                <TouchableHighlight onPress={()=>Linking.openURL(item.item.url)} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10}}>
+                <TouchableHighlight onPress={()=>{Linking.openURL(item.item.url.includes("https://")==true?item.item.url:'https://'+item.item.url);onSave("Website Views",emoney.user.id,item.item.id)}} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10}}>
                     <Text style={{alignSelf:'center',color:'white'}}>View</Text>
                 </TouchableHighlight>
                 :

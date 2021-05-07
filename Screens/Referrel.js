@@ -1,11 +1,12 @@
-import React, { useContext , useState , useEffect} from 'react';
-import { View, Text , Image, ScrollView, TouchableHighlight, Share, Button} from 'react-native';
+import React, { useContext , useState , useEffect , useRef, useCallback} from 'react';
+import { View, Text , TextInput, ScrollView, TouchableHighlight, Share, TouchableOpacity} from 'react-native';
 import { useNavigation , DrawerActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ReferrelSocial } from "../Styles/ReferrelSocial";
 import { SocialIcon } from 'react-social-icons';
 import Clipboard from '@react-native-community/clipboard';
 import {EmoneyContext}  from '../context/Context';
+import { Checkbox, NativeBaseProvider , Stack } from "native-base";
 // import { SocialIcon } from 'react-native-elements'
 
 export default function Referrel () {
@@ -15,8 +16,13 @@ export default function Referrel () {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
-
+  const inputRef = useRef();
   const emoney = useContext(EmoneyContext);
+
+  const clearText = useCallback(() => {
+    inputRef.current.setNativeProps({ text: "" });
+  }, []);
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -51,10 +57,16 @@ export default function Referrel () {
     setRefreshing(false);
   }
 
+  const [groupValue, setGroupValue] = React.useState([]);
+  
+  const [value, setvalue] = React.useState('');
+
   useEffect(() => {
     getReferralPoints()
+    
   });
     return (
+      <NativeBaseProvider>
       <View style={{flex:1}}>
         <View style={{backgroundColor:'white',height:75,justifyContent:'center',paddingLeft:40}}>
             <Ionicons name="ios-menu" color={'black'} size={25} style={{position: 'absolute',top:30,left:10,zIndex:1}} onPress={()=>navigation.dispatch(DrawerActions.toggleDrawer())} />
@@ -77,8 +89,21 @@ export default function Referrel () {
         
 
         {/* </View> */}
+
+        <TextInput ref={inputRef} style={{borderWidth:2}} onChangeText={(text)=>setvalue(text)} />
+      <TouchableOpacity onPress={clearText}>
+        <Text>Clear text</Text>
+      </TouchableOpacity>
+      
+                {/* <Checkbox>
+                  <Text style={{paddingLeft:20}}>kbhsadhjkvgbds</Text>
+                </Checkbox> */}
+
+                
+
         </ScrollView>
       </View>
+      </NativeBaseProvider>
     );
   
 }

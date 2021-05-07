@@ -7,6 +7,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Drawer from "./DrawerNavigation";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import Profile from "./Profile";
 import Dashboard from "./Dashboard";
@@ -19,7 +20,7 @@ import ImagePicker from './ImagePicker'
 
 const Tab = createMaterialBottomTabNavigator();
 
-export default function MyTabs() {
+export default function MyTabs({navigation}) {
   return (
     <Tab.Navigator
     lazy
@@ -38,6 +39,7 @@ export default function MyTabs() {
               tabBarIcon: ({ color }) => (
                 <Ionicons name="home-outline" color={color} size={17} />
               ),
+              
             }}
             />
              <Tab.Screen 

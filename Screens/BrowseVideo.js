@@ -61,6 +61,28 @@ export default function BrowseVideo () {
     
   };
 
+  const onSave = (ser,uid,oid) =>{
+
+    const data = { service: ser,userid:uid,orderid:oid};
+   
+    fetch('https://emoneytag.com/api/socialengage', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      
+    })
+    // navigation.goBack()
+  }
+
   useEffect(() => {
     getLinks()
     getPoints()
@@ -87,7 +109,7 @@ export default function BrowseVideo () {
                 {/* <Text>{item.item.url}</Text> */}
              
                 {item.item.status=='Like'?
-                <TouchableHighlight onPress={()=>Linking.openURL(item.item.url)} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10}}>
+                <TouchableHighlight onPress={()=>{Linking.openURL(item.item.url);onSave("Youtube Video Watch",emoney.user.id,item.item.id)}} style={{backgroundColor:'#0265d4',padding:5,paddingHorizontal:8,elevation:2,borderRadius:7,marginTop:10}}>
                     <Text style={{alignSelf:'center',color:'white'}}>Start Watching</Text>
                 </TouchableHighlight>
                 :

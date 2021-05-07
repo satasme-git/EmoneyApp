@@ -12,6 +12,10 @@ target 'emoneytag' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'emoneytagTests' do
     inherit! :complete
     # Pods for testing

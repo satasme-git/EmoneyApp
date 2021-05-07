@@ -98,7 +98,7 @@ export default function Contact () {
                     justifyContent: 'flex-start'
                 }}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={item => setQue(item)}
+                onChangeItem={item => setQue(item.value)}
             />
             {/* <TextInput
               style={styles.loginInput}

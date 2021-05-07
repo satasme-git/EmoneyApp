@@ -1,4 +1,4 @@
-import React, { useContext , useState ,useEffect} from 'react';
+import React, { useContext , useState ,useEffect , useRef} from 'react';
 import { View, Text, Image , Dimensions, ScrollView , TouchableHighlight, TextInput} from 'react-native';
 import {styles,buttons} from "../Styles/Style";
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
@@ -7,7 +7,22 @@ import { useNavigation , DrawerActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Pie from 'react-native-pie'
 import DropDownPicker from 'react-native-dropdown-picker';
+import DatePicker from 'react-native-date-picker'
+import RBSheet from "react-native-raw-bottom-sheet";
+import { format } from 'date-fns'
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator,
+} from 'react-native-indicators';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {EmoneyContext}  from '../context/Context';
 
 const windowWidth = Dimensions.get('window').width;
@@ -21,10 +36,11 @@ const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 
 
 export default function Profile () {
-  
+  const refRBSheet = useRef();
   const emoney = useContext(EmoneyContext);
   const navigation = useNavigation();  
   
+  const [date, setDate] = useState(new Date())
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [complete, setComplete] = useState('');
@@ -34,7 +50,7 @@ export default function Profile () {
 
   const [chemail, setChEmail] = useState('');
   
-  const [fname, setFname] = useState(emoney.fname);
+  const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
   const [no, setNo] = useState('');
   const [street, setStreet] = useState('');
@@ -50,12 +66,21 @@ export default function Profile () {
   const [clname, setCLname] = useState('');
   const [cno, setCNo] = useState('');
   
-  const [bcountry, setBCountry] = useState('');
+  const [bcountry, setBCountry] = useState('AAAA');
   const [gender, setGender] = useState('');
   const [dob, setDob] = useState('');
   
   const [sp, setSp] = useState('');
   const [edu, setEdu] = useState('');
+
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('user', jsonValue)
+    } catch (e) {
+      // saving error
+    }
+  }
 
   const putUserEmail = (em) =>{
 
@@ -72,7 +97,8 @@ export default function Profile () {
     .then(data => {
       // getuserData(); 
       console.log('Success:', data);
-      setChEmail(em)
+      getUserDetails()
+      getProfile()
       // storeData(data.user)
       // navigation.navigate('TabNavigation')
       // emoney.setState('home')
@@ -95,10 +121,13 @@ export default function Profile () {
       },
       body: JSON.stringify(data),
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
       // getuserData(); 
       console.log('Success:', data);
+      storeData(data)
+      emoney.setUser(data)
+      getProfile()
       // setChEmail(em)
       // storeData(data.user)
       // navigation.navigate('TabNavigation')
@@ -113,7 +142,7 @@ export default function Profile () {
 
   const putContactDetails = (fn,ln,no) =>{
 
-    const data = { fname: fn,lname:ln,number:no};
+    const data = { fname: fn,lname:ln,mobile:no};
    
     fetch('https://emoneytag.com/api/users/'+emoney.user.id+'', {
       method: 'PUT', // or 'PUT'
@@ -122,10 +151,14 @@ export default function Profile () {
       },
       body: JSON.stringify(data),
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
       // getuserData(); 
       console.log('Success:', data);
+      storeData(data)
+      emoney.setUser(data)
+      getProfile()
+
       // setChEmail(em)
       // storeData(data.user)
       // navigation.navigate('TabNavigation')
@@ -135,7 +168,6 @@ export default function Profile () {
       console.error('Error:', error);
       
     })
-    // navigation.navigate('TabNavigation')
   }
 
   const putBasicDetails = (co,ge,d) =>{
@@ -149,14 +181,12 @@ export default function Profile () {
       },
       body: JSON.stringify(data),
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-      // getuserData(); 
       console.log('Success:', data);
-      // setChEmail(em)
-      // storeData(data.user)
-      // navigation.navigate('TabNavigation')
-      // emoney.setState('home')
+      storeData(data)
+      emoney.setUser(data)
+      getProfile()
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -176,14 +206,11 @@ export default function Profile () {
       },
       body: JSON.stringify(data),
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-      // getuserData(); 
       console.log('Success:', data);
-      // setChEmail(em)
-      // storeData(data.user)
-      // navigation.navigate('TabNavigation')
-      // emoney.setState('home')
+      storeData(data)
+      emoney.setUser(data)
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -210,15 +237,45 @@ export default function Profile () {
     setRefreshing(false);
     
   };
+  // const getUserFullDetail = () => {
+  //   fetch(
+  //     'https://emoneytag.com/api/users/'+emoney.user.id+'',
+  //   )
+  //     .then((response) => response.json())
+  //     .then((json) => 
+
+  //       // setUser(json),
+  //       emoney.setUserFull(json.user),
+  //       // console.log(emoney.user),
+  //       setChEmail(emoney.userFull.tempemail),
+  //       setCFname(emoney.userFull.fname),
+  //       setCLname(emoney.userFull.lname),
+  //       setCNo(emoney.userFull.mobile),
+  //       setBCountry(emoney.userFull.country),
+  //       setGender(emoney.userFull.gender),
+  //       setDob(emoney.userFull.dob),
+  //       setSp(emoney.userFull.specialization),
+  //       setEdu(emoney.userFull.education)
+
+  //     // console.log(json)
+  //     )
+  //     // .catch((error) => 
+  //     // console.error(error)
+  //     // )
+  //     .finally(() => {setLoading(false);});
+  //   setRefreshing(false);
+    
+  // };
+
   const getUserDetails = () => {
+    setLoading(true)
     fetch(
       'https://emoneytag.com/api/users/'+emoney.user.id+'',
     )
       .then((response) => response.json())
       .then((json) => 
+
         setUser(json),
-        // console.log(emoney.user),
-        setChEmail(emoney.user.tempemail),
         setFname(user.fname),
         setLname(user.lname),
         setNo(user.addresno),
@@ -229,15 +286,15 @@ export default function Profile () {
         setCountry(user.country),
         setCurrency(user.currency),
         setPaypal(user.p_pay),
+        setChEmail(emoney.user.email),
         setCFname(emoney.user.fname),
         setCLname(emoney.user.lname),
-        setCNo(emoney.user.mobile),
+        setCNo(0+emoney.user.mobile.toString()),
         setBCountry(emoney.user.country),
         setGender(emoney.user.gender),
         setDob(emoney.user.dob),
         setSp(emoney.user.specialization),
         setEdu(emoney.user.education)
-
       // console.log(json)
       )
       // .catch((error) => 
@@ -286,6 +343,8 @@ export default function Profile () {
     getProfile()
     getPoints()
     getUserDetails()
+    // getUserFullDetail()
+    // console.log(emoney.userFull)
   },[]);
   const renderNavBar = () => (
     <View style={styles.navContainer}>
@@ -302,10 +361,11 @@ export default function Profile () {
 
     return (
       <View style={{backgroundColor: 'white',marginBottom:-40,marginTop:45}}>
+
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
           <View>
           <Image source={require('../assets/pro.png')} style={{height:100,width:100,borderRadius:50}}/>
-          <Text style={[styles.headerText2]}>{earn.email} </Text>
+          <Text style={[styles.headerText2]} onLayout={()=>{getUserDetails()}}>{earn.email} </Text>
               <Text style={styles.headerText2}>Mobile Number : {earn.mobile} </Text>
               <Text style={styles.headerText2}>Earned Points : {earn.points} </Text>
               {/* <Text>{emoney.user.fname}</Text> */}
@@ -438,7 +498,7 @@ export default function Profile () {
             />
               <DropDownPicker
                 items={[
-                    {label: '--Select Country--', value: '',selected:true},
+                    {label: '--Select Country--', value: 'AAAA',selected:true},
                     {label: 'Afghanistan', value: 'AF'},
                     {label: 'Armenia', value: 'AM'},
                     {label: 'Azerbaijan', value: 'AZ'},
@@ -495,19 +555,19 @@ export default function Profile () {
                 //   fontWeight: 'bold',
                 //   textAlign: 'center'
                 // }}
-                // defaultValue={bcountry}
+                defaultValue={country}
                 containerStyle={{height: 40,marginTop:0}}
                 style={{backgroundColor: '#eaebee',borderColor:'#eaebee'}}
                 itemStyle={{
                     justifyContent: 'flex-start'
                 }}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={item => setCountry(item)}
+                onChangeItem={item => setCountry(item.value)}
             />
 
               <DropDownPicker
                 items={[
-                  {label: '--Select Currency--', value: '',selected:true},
+                  {label: '--Select Currency--', value: 'AAAA',selected:true},
                   {label:'Afghan Afghani', value:"AFA"},
                   {label:'Armenian Dram', value:"AMD"},
                   {label:'Azerbaijani Manat', value:"AZN"},
@@ -555,13 +615,14 @@ export default function Profile () {
                   {label:'Vietnamese Dong', value:"VND"},
                   {label:'Yemeni Rial', value:"YER"},
                 ]}
+                defaultValue={currency}
                 containerStyle={{height: 40,marginTop:10}}
                 style={{backgroundColor: '#eaebee',borderColor:'#eaebee'}}
                 itemStyle={{
                     justifyContent: 'flex-start'
                 }}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={item => setCurrency(item)}
+                onChangeItem={item => setCurrency(item.value)}
               />
             <TextInput
               style={{backgroundColor:'#eaebee',width:windowWidth-40,paddingLeft:10,height:40,borderRadius:2,marginBottom:10,marginTop:10}}
@@ -600,7 +661,7 @@ export default function Profile () {
               value={cno}
               keyboardType={'email-address'}
             />
-          <TouchableHighlight onPress={()=>{putContactDetails(cfname,clname,cno)}} style={{backgroundColor:'#28a745',padding:7,paddingHorizontal:8,borderRadius:7,alignItems:'center'}}>
+          <TouchableHighlight onPress={()=>{putContactDetails(cfname,clname,cno);}} style={{backgroundColor:'#28a745',padding:7,paddingHorizontal:8,borderRadius:7,alignItems:'center'}}>
               <Text style={{color:'white'}}>Save</Text>
           </TouchableHighlight>
           </View>
@@ -612,7 +673,7 @@ export default function Profile () {
             <View>
             <DropDownPicker
                 items={[
-                    {label: '--Select Country--', value: '',selected:true},
+                    {label: '--Select Country--', value: 'AAAA',selected:true},
                     {label: 'Afghanistan', value: 'AF'},
                     {label: 'Armenia', value: 'AM'},
                     {label: 'Azerbaijan', value: 'AZ'},
@@ -669,23 +730,17 @@ export default function Profile () {
                 //   fontWeight: 'bold',
                 //   textAlign: 'center'
                 // }}
-                // defaultValue={bcountry}
+                defaultValue={bcountry}
                 containerStyle={{height: 40,marginTop:10}}
                 style={{backgroundColor: '#eaebee',borderColor:'#eaebee'}}
                 itemStyle={{
                     justifyContent: 'flex-start'
                 }}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
-                onChangeItem={item => setBCountry(item)}
+                onChangeItem={item => setBCountry(item.value)}
             />
             </View>
-          {/* <TextInput
-              style={{backgroundColor:'white',elevation:1,width:windowWidth-40,paddingLeft:10,height:40,borderRadius:2,marginBottom:10}}
-              placeholder="Country"
-              onChangeText={(text) => setBCountry(text)}
-              value={bcountry}
-              keyboardType={'email-address'}
-            /> */}
+            
             <TextInput
               style={{backgroundColor:'#eaebee',width:windowWidth-40,paddingLeft:10,height:40,borderRadius:2,marginBottom:10,marginTop:10}}
               placeholder="Gender"
@@ -693,16 +748,15 @@ export default function Profile () {
               value={gender}
               keyboardType={'email-address'}
             />
-            <TextInput
-              style={{backgroundColor:'#eaebee',width:windowWidth-40,paddingLeft:10,height:40,borderRadius:2,marginBottom:10}}
-              placeholder="Date of Birth"
-              onChangeText={(text) => setDob(text)}
-              value={dob}
-              keyboardType={'email-address'}
-            />
-          <TouchableHighlight onPress={()=>{putBasicDetails(bcountry,gender,dob)}} style={{backgroundColor:'#28a745',padding:7,paddingHorizontal:8,borderRadius:7,alignItems:'center',zIndex:2}}>
+
+            <TouchableHighlight underlayColor={'#DDDDDD'} onPress={() => refRBSheet.current.open()} style={{backgroundColor:'#eaebee',width:windowWidth-40,paddingLeft:10,height:40,borderRadius:2,marginBottom:10,justifyContent:'center'}}>
+              <Text>{format(date, "yyyy-MM-dd")}</Text>
+            </TouchableHighlight>
+
+          <TouchableHighlight onPress={()=>{putBasicDetails(bcountry,gender,format(date, "yyyy-MM-dd"));}} style={{backgroundColor:'#28a745',padding:7,paddingHorizontal:8,borderRadius:7,alignItems:'center',zIndex:2}}>
               <Text style={{color:'white'}}>Save</Text>
           </TouchableHighlight>
+
           </View>
         </View>
 
@@ -737,6 +791,17 @@ export default function Profile () {
 
     return (
       <View style={styles.containerInner}>
+
+        {isLoading==true?(
+        <View style={{position:'absolute',height:SCREEN_HEIGHT,width:windowWidth,zIndex:1,top:0,backgroundColor: 'rgba(0,0,0,0.3)',elevation:6,justifyContent:'center',alignItems:'center'}}>
+          <View style={{alignSelf:'center',alignItems:'center',justifyContent: 'center',height:120,width:120}}>
+            <Image source={require('../assets/icon.png')} style={{height:50,width:50,tintColor:'white'}} />
+            <MaterialIndicator  color='white' size={30}/>
+          </View>
+        </View>):
+        null
+        }
+
         <Ionicons name="ios-menu" color={'black'} size={25} style={{position: 'absolute',top:30,left:10,zIndex:1}} onPress={()=>navigation.dispatch(DrawerActions.toggleDrawer())} />
         <ReactNativeParallaxHeader
         headerMinHeight={HEADER_HEIGHT}
@@ -760,6 +825,25 @@ export default function Profile () {
         //   onScrollEndDrag: () => console.log('onScrollEndDrag'),
         // }}
       />
+            <RBSheet
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0,0,0,0.1)",
+          },
+          draggableIcon: {
+            backgroundColor: "#000"
+          }
+        }}
+      >
+            <DatePicker
+              mode={'date'}
+              date={date}
+              onDateChange={setDate}
+            />
+      </RBSheet>
       </View>
     );
   

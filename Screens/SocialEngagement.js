@@ -33,7 +33,7 @@ function SocialEngagement () {
             {item.id=='6' || item.id=='7'?null:
             item.types.map((typ)=>
             typ.header=='Views' && item.name=='Youtube'?null :
-            <TouchableOpacity onPress={()=>navigation.navigate('SocialEngSingle',{item:item.name+' '+typ.header,img:item.image,type:typ})} style={{flexDirection:'row', margin:10, backgroundColor: 'white',elevation:5,padding:10,borderRadius:20,alignSelf:'center'}}>
+            <TouchableOpacity onPress={()=>navigation.navigate('SocialEngSingle',{service:item.name+' '+typ.header,img:item.image,type:typ,})} style={{flexDirection:'row', margin:10, backgroundColor: 'white',elevation:5,padding:10,borderRadius:20,alignSelf:'center'}}>
               <Image source={item.image} style={{height:20,width:20,resizeMode:'cover',marginRight:5}}/>
               <Text> {item.name} </Text>
               <Text> {typ.header} </Text> 
